@@ -1,6 +1,6 @@
 {
   "name": "@chat-ads/chatads-sdk",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "TypeScript/JavaScript client for the ChatAds prospect scoring API",
   "license": "MIT",
   "type": "module",
