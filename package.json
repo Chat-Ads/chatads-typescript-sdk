@@ -1,0 +1,51 @@
+{
+  "name": "@chatads/chatads-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript/JavaScript client for the ChatAds prospect scoring API",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit && eslint 'src/**/*.ts' 'tests/**/*.ts'",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "chatads",
+    "sdk",
+    "typescript",
+    "javascript",
+    "ads"
+  ],
+  "author": "ChatAds",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chat-Ads/chatads-backend"
+  },
+  "bugs": {
+    "url": "https://github.com/Chat-Ads/chatads-backend/issues"
+  },
+  "homepage": "https://github.com/Chat-Ads/chatads-backend/tree/main/typescript-sdk",
+  "devDependencies": {
+    "@types/node": "22.5.0",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}
