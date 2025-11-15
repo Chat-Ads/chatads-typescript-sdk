@@ -7,15 +7,15 @@ Type-safe client for the ChatAds `/v1/chatads/messages` endpoint. Works in Node.
 ## Installation
 
 ```bash
-npm install @chatads/chatads-sdk
-# or: pnpm add @chatads/chatads-sdk
-yarn add @chatads/chatads-sdk
+npm install @chat-ads/chatads-sdk
+# or: pnpm add @chat-ads/chatads-sdk
+yarn add @chat-ads/chatads-sdk
 ```
 
 ## Quickstart
 
 ```ts
-import { ChatAdsClient } from "@chatads/chatads-sdk";
+import { ChatAdsClient } from "@chat-ads/chatads-sdk";
 
 const client = new ChatAdsClient({
   apiKey: process.env.CHATADS_API_KEY!,
@@ -56,7 +56,7 @@ const result = await client.analyzeMessage("Need scheduling ideas", {
 ## Error handling
 
 ```ts
-import { ChatAdsAPIError, ChatAdsSDKError } from "@chatads/chatads-sdk";
+import { ChatAdsAPIError, ChatAdsSDKError } from "@chat-ads/chatads-sdk";
 
 try {
   await client.analyze({ message: "Hi" });

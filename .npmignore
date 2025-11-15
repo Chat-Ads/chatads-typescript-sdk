@@ -1,0 +1,32 @@
+# Source files (only publish compiled dist/)
+src/
+tests/
+examples/
+
+# Config files
+tsconfig.json
+vitest.config.ts
+.eslintrc.*
+.prettierrc.*
+
+# Development files
+*.test.ts
+*.spec.ts
+.git/
+.github/
+.vscode/
+.idea/
+
+# Environment and local files
+.env
+.env.*
+*.log
+
+# CI/CD
+.github/
+
+# macOS
+.DS_Store
+
+# Markdown (keep README, CHANGELOG, LICENSE)
+CONTRIBUTING.md

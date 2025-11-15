@@ -1,5 +1,5 @@
 {
-  "name": "@chatads/chatads-sdk",
+  "name": "@chat-ads/chatads-sdk",
   "version": "0.1.0",
   "description": "TypeScript/JavaScript client for the ChatAds prospect scoring API",
   "license": "MIT",
@@ -34,12 +34,12 @@
   "author": "ChatAds",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chat-Ads/chatads-backend"
+    "url": "https://github.com/Chat-Ads/chatads-typescript-sdk"
   },
   "bugs": {
-    "url": "https://github.com/Chat-Ads/chatads-backend/issues"
+    "url": "https://github.com/Chat-Ads/chatads-typescript-sdk/issues"
   },
-  "homepage": "https://github.com/Chat-Ads/chatads-backend/tree/main/typescript-sdk",
+  "homepage": "https://github.com/Chat-Ads/chatads-typescript-sdk",
   "devDependencies": {
     "@types/node": "22.5.0",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
