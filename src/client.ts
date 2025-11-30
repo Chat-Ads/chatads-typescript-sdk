@@ -11,8 +11,8 @@ const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
   page_url: "pageUrl",
   pagetitle: "pageTitle",
   page_title: "pageTitle",
-  useragent: "userAgent",
-  user_agent: "userAgent",
+  overrideparsing: "override_parsing",
+  override_parsing: "override_parsing",
 };
 
 type FetchLike = typeof fetch;
@@ -30,7 +30,6 @@ export interface ChatAdsClientOptions {
   raiseOnFailure?: boolean;
   fetchImplementation?: FetchLike;
   logger?: Logger;
-  userAgent?: string;
 }
 
 export interface AnalyzeOptions {
@@ -53,7 +52,6 @@ export class ChatAdsClient {
   private readonly raiseOnFailure: boolean;
   private readonly fetchImpl: FetchLike;
   private readonly logger?: Logger;
-  private readonly userAgent?: string;
 
   constructor(options: ChatAdsClientOptions) {
     if (!options?.apiKey) {
@@ -72,7 +70,6 @@ export class ChatAdsClient {
       throw new ChatAdsSDKError("Global fetch implementation not found. Pass fetchImplementation explicitly or upgrade to Node 18+");
     }
     this.logger = options.logger;
-    this.userAgent = options.userAgent;
   }
 
   async analyze(payload: FunctionItemPayload, options?: AnalyzeOptions): Promise<ChatAdsResponseEnvelope> {
@@ -98,9 +95,6 @@ export class ChatAdsClient {
       "x-api-key": this.apiKey,
       ...lowercaseHeaders(options?.headers),
     };
-    if (this.userAgent) {
-      headers["user-agent"] = this.userAgent;
-    }
 
     let attempt = 0;
     // eslint-disable-next-line no-constant-condition

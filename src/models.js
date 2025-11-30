@@ -1,0 +1,16 @@
+export const RESERVED_PAYLOAD_KEYS = new Set([
+    "message",
+    "pageUrl",
+    "pageTitle",
+    "referrer",
+    "address",
+    "email",
+    "type",
+    "domain",
+    "ip",
+    "reason",
+    "company",
+    "name",
+    "country",
+    "override_parsing",
+]);

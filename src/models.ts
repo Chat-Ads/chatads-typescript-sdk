@@ -1,3 +1,5 @@
+export type ResponseQuality = "high" | "normal" | "low";
+
 export type FunctionItemOptionalFields = {
   pageUrl?: string;
   pageTitle?: string;
@@ -6,14 +8,13 @@ export type FunctionItemOptionalFields = {
   email?: string;
   type?: string;
   domain?: string;
-  userAgent?: string;
   ip?: string;
   reason?: string;
   company?: string;
   name?: string;
   country?: string;
-  language?: string;
-  website?: string;
+  override_parsing?: boolean;
+  response_quality?: ResponseQuality;
 };
 
 export type FunctionItemPayload = {
@@ -79,12 +80,11 @@ export const RESERVED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   "email",
   "type",
   "domain",
-  "userAgent",
   "ip",
   "reason",
   "company",
   "name",
   "country",
-  "language",
-  "website",
+  "override_parsing",
+  "response_quality",
 ]);

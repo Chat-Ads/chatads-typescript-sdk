@@ -27,7 +27,6 @@ const client = new ChatAdsClient({
 const response = await client.analyze({
   message: "Looking for CRM tools for a 10-person sales team",
   ip: "8.8.8.8",
-  userAgent: "Mozilla/5.0",
 });
 
 if (response.success && response.data?.ad) {
