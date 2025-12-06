@@ -13,6 +13,14 @@ const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
   page_title: "pageTitle",
   overrideparsing: "override_parsing",
   override_parsing: "override_parsing",
+  messageanalysis: "message_analysis",
+  message_analysis: "message_analysis",
+  fillpriority: "fill_priority",
+  fill_priority: "fill_priority",
+  minintent: "min_intent",
+  min_intent: "min_intent",
+  skipmessageanalysis: "skip_message_analysis",
+  skip_message_analysis: "skip_message_analysis",
 };
 
 type FetchLike = typeof fetch;

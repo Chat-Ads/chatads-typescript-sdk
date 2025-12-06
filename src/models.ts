@@ -1,5 +1,9 @@
 export type ResponseQuality = "high" | "normal" | "low";
 
+export type MessageAnalysis = "fast" | "balanced" | "thorough";
+export type FillPriority = "speed" | "coverage";
+export type MinIntent = "any" | "low" | "medium" | "high";
+
 export type FunctionItemOptionalFields = {
   pageUrl?: string;
   pageTitle?: string;
@@ -15,6 +19,10 @@ export type FunctionItemOptionalFields = {
   country?: string;
   override_parsing?: boolean;
   response_quality?: ResponseQuality;
+  message_analysis?: MessageAnalysis;
+  fill_priority?: FillPriority;
+  min_intent?: MinIntent;
+  skip_message_analysis?: boolean;
 };
 
 export type FunctionItemPayload = {
@@ -31,8 +39,13 @@ export interface ChatAdsAd {
 
 export interface ChatAdsData {
   matched: boolean;
+  filled?: boolean;
   ad?: ChatAdsAd | null;
+  keyword?: string | null;
   reason?: string | null;
+  intent_score?: number | null;
+  intent_level?: string | null;
+  min_intent_required?: string | null;
 }
 
 export interface ChatAdsError {
@@ -43,14 +56,11 @@ export interface ChatAdsError {
 
 export interface UsageInfo {
   monthly_requests: number;
-  free_tier_limit: number;
-  free_tier_remaining: number;
+  free_tier_limit?: number | null;
+  free_tier_remaining?: number | null;
   is_free_tier: boolean;
-  has_credit_card: boolean;
   daily_requests?: number | null;
   daily_limit?: number | null;
-  minute_requests?: number | null;
-  minute_limit?: number | null;
 }
 
 export interface ChatAdsMeta {
@@ -58,6 +68,10 @@ export interface ChatAdsMeta {
   user_id?: string | null;
   country?: string | null;
   language?: string | null;
+  extraction_method?: "llm" | "nlp" | "skip" | null;
+  message_analysis_used?: "fast" | "balanced" | "thorough" | "skip" | null;
+  fill_priority_used?: "speed" | "coverage" | "skip" | null;
+  min_intent_used?: "any" | "low" | "medium" | "high" | null;
   processing_time_ms?: number | null;
   usage?: UsageInfo | null;
   [key: string]: unknown;
@@ -87,4 +101,8 @@ export const RESERVED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   "country",
   "override_parsing",
   "response_quality",
+  "message_analysis",
+  "fill_priority",
+  "min_intent",
+  "skip_message_analysis",
 ]);

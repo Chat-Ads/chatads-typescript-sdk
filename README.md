@@ -40,15 +40,12 @@ if (response.success && response.data?.ad) {
 
 ```ts
 const result = await client.analyzeMessage("Need scheduling ideas", {
-  pageUrl: "https://acme.com/contact",
-  domain: "acme.com",
-  extraFields: {
-    formId: "lead-gen-7",
-  },
+  country: "US",
+  message_analysis: "balanced",
 });
 ```
 
-- Reserved payload keys (like `message`, `pageUrl`, etc.) cannot be overwritten inside `extraFields`; the client throws if it detects a collision.
+- Reserved payload keys (like `message`, `country`, etc.) cannot be overwritten inside `extraFields`; the client throws if it detects a collision.
 - Pass `raiseOnFailure: true` to throw `ChatAdsAPIError` when the API returns `success: false` with HTTP 200 responses.
 - Retries honor `Retry-After` headers and exponential backoff (`maxRetries` + `retryBackoffFactorMs`).
 
@@ -94,23 +91,32 @@ try {
   "success": true,
   "data": {
     "matched": true,
+    "filled": true,
     "ad": {
       "product": "CRM Pro",
       "link": "https://getchatads.com/example",
       "message": "Try CRM Pro for your sales team",
       "category": "Software"
-    }
+    },
+    "keyword": "CRM tools",
+    "intent_score": 0.85,
+    "intent_level": "high"
   },
   "error": null,
   "meta": {
     "request_id": "req_123",
+    "extraction_method": "llm",
+    "message_analysis_used": "balanced",
+    "fill_priority_used": "coverage",
+    "min_intent_used": "low",
     "processing_time_ms": 42.3,
     "usage": {
       "monthly_requests": 120,
       "free_tier_limit": 1000,
       "free_tier_remaining": 880,
       "is_free_tier": false,
-      "has_credit_card": true
+      "daily_requests": 20,
+      "daily_limit": 100
     }
   }
 }
