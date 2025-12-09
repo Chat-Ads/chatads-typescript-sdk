@@ -6,13 +6,11 @@ const DEFAULT_ENDPOINT = "/v1/chatads/messages";
 const DEFAULT_TIMEOUT_MS = 10_000;
 const DEFAULT_BACKOFF_FACTOR = 500; // ms
 const DEFAULT_RETRYABLE_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
+/**
+ * Field aliases for normalizing optional field names.
+ * Only includes the 6 optional fields from the OpenAPI spec.
+ */
 const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
-  pageurl: "pageUrl",
-  page_url: "pageUrl",
-  pagetitle: "pageTitle",
-  page_title: "pageTitle",
-  overrideparsing: "override_parsing",
-  override_parsing: "override_parsing",
   messageanalysis: "message_analysis",
   message_analysis: "message_analysis",
   fillpriority: "fill_priority",

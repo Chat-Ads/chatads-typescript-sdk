@@ -1,27 +1,23 @@
-export type ResponseQuality = "high" | "normal" | "low";
-
 export type MessageAnalysis = "fast" | "balanced" | "thorough";
 export type FillPriority = "speed" | "coverage";
 export type MinIntent = "any" | "low" | "medium" | "high";
 
+/**
+ * Optional fields for ChatAds API requests.
+ * Only these 6 optional fields are supported (plus required `message`).
+ */
 export type FunctionItemOptionalFields = {
-  pageUrl?: string;
-  pageTitle?: string;
-  referrer?: string;
-  address?: string;
-  email?: string;
-  type?: string;
-  domain?: string;
+  /** Client IP address for geo-detection (max 64 characters) */
   ip?: string;
-  reason?: string;
-  company?: string;
-  name?: string;
+  /** ISO 3166-1 alpha-2 country code for geo-targeting */
   country?: string;
-  override_parsing?: boolean;
-  response_quality?: ResponseQuality;
+  /** Keyword extraction method. Default: "balanced" */
   message_analysis?: MessageAnalysis;
+  /** URL resolution fallback behavior. Default: "coverage" */
   fill_priority?: FillPriority;
+  /** Minimum purchase intent level. Default: "low" */
   min_intent?: MinIntent;
+  /** Skip NLP/LLM extraction and use message directly as search query. Default: false */
   skip_message_analysis?: boolean;
 };
 
@@ -85,22 +81,14 @@ export interface ChatAdsResponseEnvelope {
   [key: string]: unknown;
 }
 
+/**
+ * Reserved payload keys that cannot be used in extraFields.
+ * These are the 7 allowed request fields per the OpenAPI spec.
+ */
 export const RESERVED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   "message",
-  "pageUrl",
-  "pageTitle",
-  "referrer",
-  "address",
-  "email",
-  "type",
-  "domain",
   "ip",
-  "reason",
-  "company",
-  "name",
   "country",
-  "override_parsing",
-  "response_quality",
   "message_analysis",
   "fill_priority",
   "min_intent",

@@ -14,7 +14,6 @@ export type {
   UsageInfo,
   FunctionItemPayload,
   FunctionItemOptionalFields,
-  ResponseQuality,
   MessageAnalysis,
   FillPriority,
   MinIntent,
