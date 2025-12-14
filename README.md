@@ -41,7 +41,7 @@ if (response.success && response.data?.ad) {
 ```ts
 const result = await client.analyzeMessage("Need scheduling ideas", {
   country: "US",
-  message_analysis: "balanced",
+  message_analysis: "thorough",
 });
 ```
 
@@ -106,7 +106,7 @@ try {
   "meta": {
     "request_id": "req_123",
     "extraction_method": "llm",
-    "message_analysis_used": "balanced",
+    "message_analysis_used": "thorough",
     "fill_priority_used": "coverage",
     "min_intent_used": "low",
     "processing_time_ms": 42.3,

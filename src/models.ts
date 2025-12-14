@@ -1,4 +1,4 @@
-export type MessageAnalysis = "fast" | "balanced" | "thorough";
+export type MessageAnalysis = "fast" | "thorough";
 export type FillPriority = "speed" | "coverage";
 export type MinIntent = "any" | "low" | "medium" | "high";
 
@@ -11,7 +11,7 @@ export type FunctionItemOptionalFields = {
   ip?: string;
   /** ISO 3166-1 alpha-2 country code for geo-targeting */
   country?: string;
-  /** Keyword extraction method. Default: "balanced" */
+  /** Keyword extraction method. Default: "thorough" */
   message_analysis?: MessageAnalysis;
   /** URL resolution fallback behavior. Default: "coverage" */
   fill_priority?: FillPriority;
@@ -65,7 +65,7 @@ export interface ChatAdsMeta {
   country?: string | null;
   language?: string | null;
   extraction_method?: "llm" | "nlp" | "skip" | null;
-  message_analysis_used?: "fast" | "balanced" | "thorough" | "skip" | null;
+  message_analysis_used?: "fast" | "thorough" | "skip" | null;
   fill_priority_used?: "speed" | "coverage" | "skip" | null;
   min_intent_used?: "any" | "low" | "medium" | "high" | null;
   processing_time_ms?: number | null;
