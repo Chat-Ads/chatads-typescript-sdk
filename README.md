@@ -19,7 +19,7 @@ import { ChatAdsClient } from "@chat-ads/chatads-sdk";
 
 const client = new ChatAdsClient({
   apiKey: process.env.CHATADS_API_KEY!,
-  baseUrl: "https://chatads--chatads-api-fastapiserver-serve.modal.run",
+  baseUrl: "https://api.getchatads.com",
   maxRetries: 2,
   raiseOnFailure: true,
 });
@@ -29,8 +29,8 @@ const response = await client.analyze({
   ip: "8.8.8.8",
 });
 
-if (response.success && response.data?.ad) {
-  console.log(response.data.ad);
+if (response.success && response.data?.Offers.length) {
+  console.log(response.data.Offers[0]);
 } else {
   console.error(response.error);
 }
@@ -90,26 +90,22 @@ try {
 {
   "success": true,
   "data": {
-    "matched": true,
-    "filled": true,
-    "ad": {
-      "product": "CRM Pro",
-      "link": "https://getchatads.com/example",
-      "message": "Try CRM Pro for your sales team",
-      "category": "Software"
-    },
-    "keyword": "CRM tools",
-    "intent_score": 0.85,
-    "intent_level": "high"
+    "Offers": [
+      {
+        "LinkText": "CRM tools",
+        "IntentLevel": "high",
+        "URL": "https://amazon.com/dp/example?tag=chatads-20",
+        "Status": "filled",
+        "Category": "Software"
+      }
+    ],
+    "Requested": 1,
+    "Returned": 1
   },
   "error": null,
   "meta": {
     "request_id": "req_123",
-    "extraction_method": "llm",
-    "message_analysis_used": "thorough",
-    "fill_priority_used": "coverage",
-    "min_intent_used": "low",
-    "processing_time_ms": 42.3,
+    "country": "US",
     "usage": {
       "monthly_requests": 120,
       "free_tier_limit": 1000,
@@ -128,7 +124,7 @@ TypeScript projects can import `ChatAdsResponseEnvelope` and related interfaces 
 
 ```bash
 npm run build
-CHATADS_API_KEY=... CHATADS_BASE_URL=https://chatads--chatads-api-fastapiserver-serve.modal.run \
+CHATADS_API_KEY=... CHATADS_BASE_URL=https://api.getchatads.com \
   node dist/examples/basic.js
 ```
 

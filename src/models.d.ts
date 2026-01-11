@@ -23,11 +23,24 @@ export interface ChatAdsAd {
     link: string;
     message: string;
     category: string;
+    keyword?: string | null;
+    semantic_keyword?: string | null;
+    intent_score?: number | null;
+    intent_level?: string | null;
+    product_id?: string | null;
 }
 export interface ChatAdsData {
     matched: boolean;
+    filled?: boolean;
     ad?: ChatAdsAd | null;
+    ads?: ChatAdsAd[] | null;
+    offers_requested?: number | null;
+    offers_returned?: number | null;
+    keyword?: string | null;
     reason?: string | null;
+    intent_score?: number | null;
+    intent_level?: string | null;
+    min_intent_required?: string | null;
 }
 export interface ChatAdsError {
     code: string;

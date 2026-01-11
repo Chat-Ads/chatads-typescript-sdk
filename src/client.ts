@@ -8,7 +8,7 @@ const DEFAULT_BACKOFF_FACTOR = 500; // ms
 const DEFAULT_RETRYABLE_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 /**
  * Field aliases for normalizing optional field names.
- * Only includes the 6 optional fields from the OpenAPI spec.
+ * Only includes the 7 optional fields from the OpenAPI spec.
  */
 const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
   messageanalysis: "message_analysis",
@@ -19,6 +19,8 @@ const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
   min_intent: "min_intent",
   skipmessageanalysis: "skip_message_analysis",
   skip_message_analysis: "skip_message_analysis",
+  maxoffers: "max_offers",
+  max_offers: "max_offers",
 };
 
 type FetchLike = typeof fetch;

@@ -7,8 +7,9 @@ export type {
 } from "./client.js";
 export type {
   ChatAdsResponseEnvelope,
-  ChatAdsAd,
-  ChatAdsData,
+  Offer,
+  Product,
+  AnalyzeData,
   ChatAdsError,
   ChatAdsMeta,
   UsageInfo,
@@ -17,4 +18,7 @@ export type {
   MessageAnalysis,
   FillPriority,
   MinIntent,
+  IntentLevel,
+  OfferStatus,
+  UrlSource,
 } from "./models.js";
