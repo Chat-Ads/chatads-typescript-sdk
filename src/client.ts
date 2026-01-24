@@ -8,19 +8,11 @@ const DEFAULT_BACKOFF_FACTOR = 500; // ms
 const DEFAULT_RETRYABLE_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 /**
  * Field aliases for normalizing optional field names.
- * Only includes the 7 optional fields from the OpenAPI spec.
+ * Only includes the 3 optional fields from the OpenAPI spec.
  */
 const FIELD_ALIASES: Record<string, keyof FunctionItemPayload> = {
-  messageanalysis: "message_analysis",
-  message_analysis: "message_analysis",
-  fillpriority: "fill_priority",
-  fill_priority: "fill_priority",
-  minintent: "min_intent",
-  min_intent: "min_intent",
-  skipmessageanalysis: "skip_message_analysis",
-  skip_message_analysis: "skip_message_analysis",
-  maxoffers: "max_offers",
-  max_offers: "max_offers",
+  fillpriority: "quality",
+  quality: "quality",
 };
 
 type FetchLike = typeof fetch;
@@ -120,7 +112,7 @@ export class ChatAdsClient {
         });
         const parsed = await parseResponse(response);
         const httpError = !response.ok;
-        const logicalError = this.raiseOnFailure && parsed.success === false;
+        const logicalError = this.raiseOnFailure && parsed.error != null;
         if (!httpError && !logicalError) {
           clearTimeout(timer);
           return parsed;
@@ -230,7 +222,21 @@ function normalizeOptionalFields(data: AnalyzeMessageOptions): Omit<FunctionItem
 async function parseResponse(response: Response): Promise<ChatAdsResponseEnvelope> {
   const text = await response.text();
   try {
-    return text ? (JSON.parse(text) as ChatAdsResponseEnvelope) : ({ success: false, meta: { request_id: "unknown" } } as ChatAdsResponseEnvelope);
+    const raw = text ? (JSON.parse(text) as Record<string, unknown>) : {};
+    // Normalize null/undefined to empty defaults so devs don't need null checks
+    const data = (raw.data as ChatAdsResponseEnvelope["data"]) ?? { offers: [], requested: 0, returned: 0 };
+    return {
+      data: {
+        status: data.status,
+        offers: data.offers ?? [],
+        requested: data.requested ?? 0,
+        returned: data.returned ?? 0,
+        extraction_source: data.extraction_source,
+        extraction_debug: data.extraction_debug,
+      },
+      error: raw.error as ChatAdsResponseEnvelope["error"],
+      meta: (raw.meta as ChatAdsResponseEnvelope["meta"]) ?? { request_id: "unknown" },
+    };
   } catch (error) {
     throw new ChatAdsSDKError("Failed to parse ChatAds response as JSON", error);
   }

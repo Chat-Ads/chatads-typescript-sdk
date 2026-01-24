@@ -1,29 +1,21 @@
-export type MessageAnalysis = "fast" | "thorough";
-export type FillPriority = "speed" | "coverage";
-export type MinIntent = "any" | "low" | "medium" | "high";
-export type IntentLevel = "high" | "medium" | "low" | "very_low";
-export type OfferStatus = "filled" | "scored" | "failed";
-export type UrlSource = "demo" | "serper" | "amazon_paapi" | "cache";
+export type Quality = "fast" | "standard" | "best";
+export type ConfidenceLevel = "high" | "medium" | "low" | "very_low";
+export type ResolutionSource = "demo" | "serper" | "amazon_paapi" | "cache" | "vector";
+
+/** Top-level response status indicating the outcome of the request */
+export type ResponseStatus = "filled" | "partial_fill" | "no_offers_found" | "internal_error";
 
 /**
  * Optional fields for ChatAds API requests.
- * Only these 7 optional fields are supported (plus required `message`).
+ * Only these 3 optional fields are supported (plus required `message`).
  */
 export type FunctionItemOptionalFields = {
   /** Client IP address for geo-detection (max 45 characters) */
   ip?: string;
   /** ISO 3166-1 alpha-2 country code for geo-targeting */
   country?: string;
-  /** Keyword extraction method. Default: "thorough" */
-  message_analysis?: MessageAnalysis;
-  /** URL resolution fallback behavior. Default: "coverage" */
-  fill_priority?: FillPriority;
-  /** Minimum purchase intent level. Default: "low" */
-  min_intent?: MinIntent;
-  /** Skip NLP/LLM extraction and use message directly as search query. Default: false */
-  skip_message_analysis?: boolean;
-  /** Maximum number of affiliate offers to return (1-2). Default: 1 */
-  max_offers?: number;
+  /** Resolution quality level. Default: "standard" */
+  quality?: Quality;
 };
 
 export type FunctionItemPayload = {
@@ -36,53 +28,54 @@ export type FunctionItemPayload = {
  */
 export interface Product {
   /** Product title from search result */
-  Title?: string;
+  title?: string;
   /** Product description/snippet from search result */
-  Description?: string;
+  description?: string;
+  /** Product rating (e.g., 4.5 out of 5) */
+  stars?: number;
+  /** Number of product reviews */
+  reviews?: number;
 }
 
 /**
  * Single affiliate offer returned by the API.
+ * If an offer is in the array, it is guaranteed to have a URL.
  */
 export interface Offer {
   /** Text to use for the affiliate link */
-  LinkText: string;
-  /** Product search term used */
-  SearchTerm?: string;
-  /** Intent score (0.0-1.0) */
-  IntentScore?: number | null;
-  /** Intent level classification */
-  IntentLevel: string;
-  /** Affiliate URL */
-  URL: string;
-  /** Source of the URL (e.g., amazon, serper) */
-  URLSource?: string;
-  /** Offer status */
-  Status: OfferStatus;
-  /** Reason for status (e.g., failure reason) */
-  Reason?: string;
+  link_text: string;
+  /** Product search term used (verbose mode only) */
+  search_term?: string;
+  /** Confidence score (0.0-1.0) (verbose mode only) */
+  confidence_score?: number | null;
+  /** Confidence level classification */
+  confidence_level: string;
+  /** Affiliate URL (always populated) */
+  url: string;
+  /** Source of the URL resolution (e.g., amazon, serper, vector) (verbose mode only) */
+  resolution_source?: string;
   /** Detected product category */
-  Category?: string;
+  category?: string;
   /** Product metadata from resolution */
-  Product?: Product;
+  product?: Product;
 }
 
 /**
  * Response data containing affiliate offers.
  */
 export interface AnalyzeData {
-  /** Array of affiliate offers */
-  Offers: Offer[];
+  /** Status of the request - single source of truth for outcome */
+  status: ResponseStatus;
+  /** Array of affiliate offers (only contains filled offers with URLs, never null) */
+  offers: Offer[];
   /** Number of offers requested */
-  Requested: number;
-  /** Number of offers returned */
-  Returned: number;
-  /** Total processing latency in milliseconds */
-  LatencyMs?: number;
-  /** LLM extraction step timing */
-  ExtractionMs?: number;
-  /** Affiliate URL lookup timing */
-  LookupMs?: number;
+  requested: number;
+  /** Number of offers returned (equals len(Offers)) */
+  returned: number;
+  /** Extraction source ("nlp", "groq_vector", "groq_resolved") (verbose mode only) */
+  extraction_source?: string;
+  /** Extraction debug information (verbose mode only) */
+  extraction_debug?: unknown[];
 }
 
 export interface ChatAdsError {
@@ -111,8 +104,7 @@ export interface ChatAdsMeta {
 }
 
 export interface ChatAdsResponseEnvelope {
-  success: boolean;
-  data?: AnalyzeData | null;
+  data: AnalyzeData;
   error?: ChatAdsError | null;
   meta: ChatAdsMeta;
   [key: string]: unknown;
@@ -120,15 +112,11 @@ export interface ChatAdsResponseEnvelope {
 
 /**
  * Reserved payload keys that cannot be used in extraFields.
- * These are the 8 allowed request fields per the OpenAPI spec.
+ * These are the 4 allowed request fields per the OpenAPI spec.
  */
 export const RESERVED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   "message",
   "ip",
   "country",
-  "message_analysis",
-  "fill_priority",
-  "min_intent",
-  "skip_message_analysis",
-  "max_offers",
+  "quality",
 ]);

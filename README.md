@@ -41,7 +41,6 @@ if (response.success && response.data?.Offers.length) {
 ```ts
 const result = await client.analyzeMessage("Need scheduling ideas", {
   country: "US",
-  message_analysis: "thorough",
 });
 ```
 
@@ -90,12 +89,12 @@ try {
 {
   "success": true,
   "data": {
+    "Status": "filled",
     "Offers": [
       {
         "LinkText": "CRM tools",
         "IntentLevel": "high",
         "URL": "https://amazon.com/dp/example?tag=chatads-20",
-        "Status": "filled",
         "Category": "Software"
       }
     ],
