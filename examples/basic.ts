@@ -8,7 +8,7 @@ async function main() {
 
   const client = new ChatAdsClient({
     apiKey,
-    baseUrl: process.env.CHATADS_BASE_URL ?? "https://chatads--chatads-api-fastapiserver-serve.modal.run",
+    baseUrl: process.env.CHATADS_BASE_URL ?? "https://api.getchatads.com",
     maxRetries: 1,
     raiseOnFailure: true,
   });

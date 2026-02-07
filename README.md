@@ -29,8 +29,8 @@ const response = await client.analyze({
   ip: "8.8.8.8",
 });
 
-if (response.success && response.data?.Offers.length) {
-  console.log(response.data.Offers[0]);
+if (response.data?.offers?.length) {
+  console.log(response.data.offers[0]);
 } else {
   console.error(response.error);
 }
@@ -45,7 +45,7 @@ const result = await client.analyzeMessage("Need scheduling ideas", {
 ```
 
 - Reserved payload keys (like `message`, `country`, etc.) cannot be overwritten inside `extraFields`; the client throws if it detects a collision.
-- Pass `raiseOnFailure: true` to throw `ChatAdsAPIError` when the API returns `success: false` with HTTP 200 responses.
+- Pass `raiseOnFailure: true` to throw `ChatAdsAPIError` when the API returns an error with HTTP 200 responses.
 - Retries honor `Retry-After` headers and exponential backoff (`maxRetries` + `retryBackoffFactorMs`).
 
 ## Error handling
@@ -66,7 +66,7 @@ try {
 }
 ```
 
-`ChatAdsAPIError` wraps non-2xx API responses (and optionally `success:false`). `ChatAdsSDKError` covers local issues like invalid payloads, timeouts, or missing `fetch`.
+`ChatAdsAPIError` wraps non-2xx API responses (and optionally error responses). `ChatAdsSDKError` covers local issues like invalid payloads, timeouts, or missing `fetch`.
 
 ## Configuration options
 
@@ -77,9 +77,9 @@ try {
 | `endpoint` | Defaults to `/v1/chatads/messages`. Override if you host multiple versions. |
 | `timeoutMs` | Request timeout (default 10s). |
 | `maxRetries` | How many automatic retries to attempt for retryable HTTP statuses. |
-| `retryStatuses` | Array of status codes treated as retryable (defaults to `408, 429, 5xx`). |
+| `retryStatuses` | Array of status codes treated as retryable (defaults to `408, 429, 500, 502, 503, 504`). |
 | `retryBackoffFactorMs` | Base backoff delay in milliseconds (default 500). |
-| `raiseOnFailure` | Throw when the API returns `success:false` even if HTTP 200. |
+| `raiseOnFailure` | Throw when the API returns an error even if HTTP 200. |
 | `fetchImplementation` | Provide a custom `fetch` for Node < 18 or custom runtimes. |
 | `logger` | Optional logger (any object with `debug`). Useful for redacted request logs. |
 
@@ -87,19 +87,17 @@ try {
 
 ```json
 {
-  "success": true,
   "data": {
-    "Status": "filled",
-    "Offers": [
+    "status": "filled",
+    "offers": [
       {
-        "LinkText": "CRM tools",
-        "IntentLevel": "high",
-        "URL": "https://amazon.com/dp/example?tag=chatads-20",
-        "Category": "Software"
+        "link_text": "CRM tools",
+        "confidence_level": "high",
+        "url": "https://amazon.com/dp/example?tag=chatads-20"
       }
     ],
-    "Requested": 1,
-    "Returned": 1
+    "requested": 1,
+    "returned": 1
   },
   "error": null,
   "meta": {

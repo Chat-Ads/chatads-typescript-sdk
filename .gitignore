@@ -1,5 +1,7 @@
 # Build output
 dist/
+src/*.js
+src/*.d.ts
 
 # Dependencies
 node_modules/

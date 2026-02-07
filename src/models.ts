@@ -54,8 +54,6 @@ export interface Offer {
   url: string;
   /** Source of the URL resolution (e.g., amazon, serper, vector) (verbose mode only) */
   resolution_source?: string;
-  /** Detected product category */
-  category?: string;
   /** Product metadata from resolution */
   product?: Product;
 }
@@ -76,6 +74,8 @@ export interface AnalyzeData {
   extraction_source?: string;
   /** Extraction debug information (verbose mode only) */
   extraction_debug?: unknown[];
+  /** Resolution debug information (verbose mode only) */
+  resolution_debug?: unknown[];
 }
 
 export interface ChatAdsError {

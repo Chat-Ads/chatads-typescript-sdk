@@ -5,7 +5,7 @@ import { RESERVED_PAYLOAD_KEYS } from "./models.js";
 const DEFAULT_ENDPOINT = "/v1/chatads/messages";
 const DEFAULT_TIMEOUT_MS = 10_000;
 const DEFAULT_BACKOFF_FACTOR = 500; // ms
-const DEFAULT_RETRYABLE_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
+const DEFAULT_RETRYABLE_STATUSES = new Set([408, 429, 500, 502, 503, 504]);
 /**
  * Field aliases for normalizing optional field names.
  * Only includes the 3 optional fields from the OpenAPI spec.
@@ -91,9 +91,9 @@ export class ChatAdsClient {
   private async post(body: Record<string, unknown>, options?: AnalyzeOptions): Promise<ChatAdsResponseEnvelope> {
     const url = `${this.baseUrl}${this.endpoint}`;
     const headers: Record<string, string> = {
+      ...lowercaseHeaders(options?.headers),
       "content-type": "application/json",
       "x-api-key": this.apiKey,
-      ...lowercaseHeaders(options?.headers),
     };
 
     let attempt = 0;
@@ -171,6 +171,7 @@ function normalizeBaseUrl(raw: string | undefined): string {
     }
     return url.toString().replace(/\/$/, "");
   } catch (error) {
+    if (error instanceof ChatAdsSDKError) throw error;
     throw new ChatAdsSDKError(`Invalid baseUrl: ${raw}`, error);
   }
 }
@@ -233,6 +234,7 @@ async function parseResponse(response: Response): Promise<ChatAdsResponseEnvelop
         returned: data.returned ?? 0,
         extraction_source: data.extraction_source,
         extraction_debug: data.extraction_debug,
+        resolution_debug: data.resolution_debug,
       },
       error: raw.error as ChatAdsResponseEnvelope["error"],
       meta: (raw.meta as ChatAdsResponseEnvelope["meta"]) ?? { request_id: "unknown" },
